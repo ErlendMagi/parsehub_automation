@@ -1,7 +1,7 @@
 name: Daily ParseHub Automation
 
 on:
-  workflow_dispatch:  # ✅ Enables "Run workflow" button
+  workflow_dispatch:  # ✅ Enables manual trigger
   schedule:
     - cron: '15 14 * * *'  # Runs at 15:15 CET (Norwegian Time)
 
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install system dependencies  # <--- NEW STEP
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
@@ -27,11 +27,10 @@ jobs:
         run: |
           Rscript -e "install.packages(c('httr', 'jsonlite', 'dplyr', 'stringr', 'tidyr', 'readr', 'googlesheets4'), repos='http://cran.rstudio.com/')"
 
-       - name: Authenticate Google Sheets
+      - name: Authenticate Google Sheets
         run: |
           echo '${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}' > gs4_auth.json
-          cat gs4_auth.json  # Debug: Print JSON content to check if it's correct
+          cat gs4_auth.json  # Debugging: Print JSON content
 
       - name: Run R script
         run: Rscript run_parsehub.R
-
