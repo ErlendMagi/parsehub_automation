@@ -27,5 +27,8 @@ jobs:
         run: |
           Rscript -e "install.packages(c('httr', 'jsonlite', 'dplyr', 'stringr', 'tidyr', 'readr', 'googlesheets4'), repos='http://cran.rstudio.com/')"
 
+      - name: Authenticate Google Sheets  # <--- NEW STEP
+        run: echo '${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}' > gs4_auth.json
+
       - name: Run R script
         run: Rscript run_parsehub.R
