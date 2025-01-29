@@ -34,7 +34,16 @@ csv_file_path <- "C:/Users/erlen/Downloads/daily_summary_data.csv"  # Update wit
 sheet_url <- "https://docs.google.com/spreadsheets/d/1V_5pWBAPcTxHSYkFSHoVv_UVoN9dHcUcxlWRRsPCqEQ/edit#gid=0"  # Your actual Google Sheet link
 
 # Google authentication (only needed once)
-gs4_auth(email = "erlend.t.ellingsen@gmail.com")  # Replace with your actual Google email
+library(jsonlite)
+library(googlesheets4)
+
+# Read Service Account JSON from GitHub Actions Secret
+service_account_json <- Sys.getenv("GOOGLE_SHEETS_CREDENTIALS")
+writeLines(service_account_json, "gs4_auth.json")
+
+# Authenticate using the service account key
+gs4_auth(path = "gs4_auth.json")
+
 
 # Helper function to handle API responses
 handle_response <- function(response) {
