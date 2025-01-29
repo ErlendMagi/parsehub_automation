@@ -1,7 +1,7 @@
 name: Daily ParseHub Automation
 
 on:
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:  # ✅ Enables "Run workflow" button
   schedule:
     - cron: '15 14 * * *'  # Runs at 15:15 CET (Norwegian Time)
 
