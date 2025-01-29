@@ -33,16 +33,20 @@ run_tokens <- list(
 csv_file_path <- "C:/Users/erlen/Downloads/daily_summary_data.csv"  # Update with your preferred location
 sheet_url <- "https://docs.google.com/spreadsheets/d/1V_5pWBAPcTxHSYkFSHoVv_UVoN9dHcUcxlWRRsPCqEQ/edit#gid=0"  # Your actual Google Sheet link
 
-# Google authentication (only needed once)
 library(jsonlite)
 library(googlesheets4)
 
-# Read Service Account JSON from GitHub Actions Secret
-service_account_json <- Sys.getenv("GOOGLE_SHEETS_CREDENTIALS")
-writeLines(service_account_json, "gs4_auth.json")
+# Detect if running inside GitHub Actions
+if (Sys.getenv("GITHUB_ACTIONS") == "true") {
+  # Use service account authentication in GitHub Actions
+  service_account_json <- Sys.getenv("GOOGLE_SHEETS_CREDENTIALS")
+  writeLines(service_account_json, "gs4_auth.json")
+  gs4_auth(path = "gs4_auth.json")
+} else {
+  # Use normal interactive authentication for local testing
+  gs4_auth()
+}
 
-# Authenticate using the service account key
-gs4_auth(path = "gs4_auth.json")
 
 
 # Helper function to handle API responses
