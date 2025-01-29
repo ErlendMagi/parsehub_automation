@@ -20,7 +20,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          Rscript -e "install.packages(c('httr', 'jsonlite', 'dplyr', 'stringr', 'tidyr', 'readr', 'googlesheets4'), repos='http://cran.rstudio.com/')"
+          Rscript -e "install.packages('httr', repos='http://cran.rstudio.com/', lib='~/R/site-library')"
+          Rscript -e "install.packages(c('jsonlite', 'dplyr', 'stringr', 'tidyr', 'readr', 'googlesheets4'), repos='http://cran.rstudio.com/', lib='~/R/site-library')"
 
       - name: Run R script
+        env:
+          R_LIBS_USER: "~/R/site-library"
         run: Rscript run_parsehub.R
